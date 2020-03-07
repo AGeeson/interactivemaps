@@ -1,0 +1,26 @@
+{% load static %}
+<html>
+	<head>
+		<title>OUTDOORX</title>
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="{% static 'css/outdoorx.css' %}">
+	</head>
+
+<p>
+  <a href="{% url 'index' %}">OutdoorX</a> -
+  <a href="{% url 'index' %}">Locations</a> -
+  <a href="{% url 'locations:new_location' %}">Add a new location</a>
+  <a href="{% url 'topics' %}">Topics</a> -
+  
+  {% if user.is_authenticated %}
+    Hello, {{ user.username }}.
+    <a href="{% url 'users:logout' %}"> log out</a>
+  {% else %}
+  	<a href="{% url 'users:register' %}">register</a> -
+    <a href="{% url 'users:login' %}">log in</a>
+  {% endif %}
+</p>
+
+</html>
+{% block content %}{% endblock content %}

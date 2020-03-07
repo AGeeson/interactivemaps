@@ -1,0 +1,19 @@
+{% extends "master/base.html" %}
+
+{% block content %}
+
+  <p>Locations</p>
+
+  <ul>
+  	{% for location in locations %}
+  	  <li>
+  	  	<a href="{% url 'location' topic.id %}">{{ topic }}</a>
+  	  </li>
+  	{% empty %}
+  	  <li>No topics have been added.</li>
+  	{% endfor %}
+  </ul>
+
+  <a href="{% url 'new_location' %}">Add a new topic:</a>
+
+{% endblock content %}
