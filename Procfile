@@ -1,1 +1,1 @@
-web: gunicorn outdoorx_0_0.wsgi
+web: gunicorn outdoor.wsgi
