@@ -1,1 +1,1 @@
-web: gunicorn project_name.wsgi
+web: gunicorn outdoorx_0_0.wsgi
