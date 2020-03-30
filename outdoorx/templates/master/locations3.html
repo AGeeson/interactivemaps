@@ -1,0 +1,91 @@
+{% extends 'master/base.html'%}
+
+{% block content %}
+<html>
+  <head>
+    <script>
+      var latlng = [];
+      var latitude = [];
+      var longitude = [];
+    </script>
+    {% for location in locations %} 
+    <script>
+        latlng.push( "{{ location.latlng }}");
+        latitude.push( "{{ location.latitude }}");
+        longitude.push( "{{ location.longitude }}");
+
+    </script>
+    {% endfor %}
+    <script>
+      function dispPoslist() {
+        latitude;
+        longitude;
+        document.getElementById("myText").innerHTML = (latitude, longitude);
+      }
+    </script>
+    <style>
+       /* Set the size of the div element that contains the map */
+      #map {
+        height: 400px;  /* The height is 400 pixels */
+        width: 100%;  /* The width is the width of the web page */
+       }
+    </style>
+  </head>
+  <body onload="dispPoslist()">
+    <h2>"The latlng is : " <span id="myText"></span></h2>
+    <h3>Here are some OutdoorX locations near you.</h3>
+    <!--The div element for the map -->
+    <div id="map"></div>
+    <script>
+      latitude;
+      longitude;
+      var map;
+      function initMap() {
+        map = new google.maps.Map(
+            document.getElementById('map'),
+            {center: new google.maps.LatLng(-32.003634, 115.751830), zoom: 13});
+
+        for (var i = 0; i < latitude.length; i++) {
+          var marker = new google.maps.Marker({
+            position: {lat: parseFloat(latitude[i]), lng: parseFloat(longitude[i])},
+            map: map
+          });
+        };
+      }
+    </script>
+
+  </body>
+<!--Load the API from the specified URL
+* The async attribute allows the browser to render the page while the API loads
+* The key parameter will contain your own API key (which is not needed for this tutorial)
+* The callback parameter executes the initMap() function
+-->
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBWr2wYPjowOdfbiaxKMaY9-C0BLkn4Xts&callback=initMap">
+</script>
+  
+  <p>Locations</p>
+
+  <ul>
+  	{% for location in locations %}
+  	  <li>
+  	  	<a href="{% url 'location' location.id %}">{{ location }}</a>
+  	  </li>
+  	{% empty %}
+  	  <li>No locations have been added.</li>
+  	{% endfor %}
+  </ul>
+
+  <ul>
+    {% for location in locations %}
+      <li>
+        {{ location.latlng }}
+      </li>
+    {% empty %}
+      <li>No coordinates have been added.</li>
+    {% endfor %}
+  </ul>
+
+  <a href="{% url 'new_location' %}">Add a new location:</a>
+
+{% endblock content %}

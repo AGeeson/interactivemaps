@@ -43,9 +43,9 @@ INSTALLED_APPS = [
 
     # My apps
     'outdoorx',
-    'locations',
     'users',
-]
+    'colorfield',
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -127,8 +127,21 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'root')
+
+STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'boot'),
+        ]
+
 LOGIN_URL = '/users/login/'
+
+MEDIA_ROOT =  os.path.join(BASE_DIR, 'media') 
+MEDIA_URL = '/media/'
+
 
 BOOTSTRAP4 = {
     'include_jquery' : True,
 }
+
+GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyBWr2wYPjowOdfbiaxKMaY9-C0BLkn4Xts'

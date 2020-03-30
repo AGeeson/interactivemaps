@@ -4,13 +4,27 @@ from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
-from .models import Topic, Entry
-from .forms import TopicForm, EntryForm
+from .models import Topic, Entry, Location, Faction
+from .forms import TopicForm, EntryForm, LocationForm
+
 # Create your views here.
+def factions(request):
+	factions = Faction.objects.filter(owner=request.user).order_by('date_added')
+	factions = Faction.objects.order_by('date_added')
+	context = {'factions' : factions, }
+	return render(request, 'master/factions.html', context)
+
+
+def success(request):
+	return render(request, 'master/success.html')
 
 def index(request):
-	"""The home page for outdoorx"""
-	return render(request, 'master/index.html')
+	locations = Location.objects.filter(owner=request.user).order_by('date_added')
+	locations = Location.objects.order_by('date_added')
+	coords = []
+ 	# for location in Location.latlng coords.append()
+	context = {'locations' : locations, 'coords': coords}
+	return render(request, 'master/index.html', context)
 
 
 def News(request):
@@ -53,6 +67,7 @@ def new_topic(request):
 	context = {'form': form}
 	return render(request, 'master/new_topic.html', context)
 
+
 @login_required
 def new_entry(request, topic_id):
 	topic = Topic.objects.get(id=topic_id)
@@ -88,4 +103,34 @@ def edit_entry(request, entry_id):
 	context = {'entry': entry, 'topic': topic, 'form':form}
 	return render(request, 'master/edit_entry.html', context)
 
+def locations(request):
+	locations = Location.objects.filter(owner=request.user).order_by('date_added')
+	locations = Location.objects.order_by('date_added')
+	coords = []
+ 	# for location in Location.latlng coords.append()
+	context = {'locations' : locations, 'coords': coords}
+	return render(request, 'master/locations.html', context)
 
+
+def location(request, location_id):
+	location = Location.objects.get(id=location_id)
+	if location.owner!= request.user:
+		raise Http404
+	context = {'location': location}
+	return render(request, 'master/location.html', context)
+
+def new_location(request):
+	if request.method != 'POST':
+		# No data submitted ; create a blank form.
+		form = LocationForm()
+	else:
+		# POST data submitted; process data. 
+		form = LocationForm(request.POST, request.FILES)
+		test = request.POST.get("latlng")
+		if form.is_valid():
+			new_location = form.save(commit=False)
+			new_location.owner = request.user
+			new_location.save()
+			return HttpResponseRedirect(reverse('locations'))
+	context = {'form': form}
+	return render(request, 'master/new_location.html', context)

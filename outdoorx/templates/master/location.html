@@ -1,0 +1,19 @@
+{% extends 'master/base.html' %}
+
+{% block content %}
+{% load static %}
+<script src="{% static 'js/index.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/location.css' %}">
+  <header>
+      <h1>{{ location }}</h1>
+  </header>
+  <div>
+    <left><h3>{{ location.description }}</h3></left>
+    <h4><left> added by: {{ user.username }}</left></h4>
+  </div>
+
+  <img src="{{ location.image }}">
+
+  <a href="{% url 'new_location' %}"><h4>Add a New Location</h4></a>
+
+{% endblock content %}

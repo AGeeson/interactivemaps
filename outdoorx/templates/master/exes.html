@@ -1,0 +1,21 @@
+{% extends "master/base.html" %}
+
+{% block content %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script> 
+  <p>Excercise Locations</p>
+
+  <ul>
+    {% for x in exes %}
+      <li>
+        <a href="{% url 'x' x.id %}">{{ x }}</a>
+      </li>
+    {% empty %}
+      <li>No topics have been added.</li>
+    {% endfor %}
+  </ul>
+
+  <a href="{% url 'new_topic' %}">Add a new topic:</a>
+
+{% endblock content %}
+
+
